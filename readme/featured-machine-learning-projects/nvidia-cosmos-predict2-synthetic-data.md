@@ -3,8 +3,6 @@ description: >-
   Generate synthetic training images and videos for training computer vision machine learning models.
 ---
 
-# Text2Video - Synthetic Data - Nvidia Cosmos Predict
-
 Created By: [Eivind Holt](www.linkedin.com/in/eivholt)
 
 GitHub Repo: [https://github.com/eivholt/edgeai-synthetic-cosmos-predict](https://github.com/eivholt/edgeai-synthetic-cosmos-predict)
@@ -30,7 +28,7 @@ This tutorial shows how to use [**NVIDIA Cosmos-predict2**](https://github
 
 We'll start with a comparison of other methods and models, walk through an easy to perform web-based demo, dive into self-hosting the smaller models, use local AI-labeling models, take full advantage of single-image generation with batching and prompt enrichment with LLMs, before we move to the larger models and video generation.
 
-[![NVIDIA Cosmos Predict2 Video2World 14B-14B Can factory demo](../../.gitbook/assets/nvidia-cosmos-predict2-synthetic-data/14B-14B-splash_01-01.png)](https://youtu.be/hyG2tCUQsDA)
+{% embed url="https://www.youtube.com/watch?v=hyG2tCUQsDA" %}
 
 In case of problems reproducing these walk-throughs, [ComfyUI now supports Cosmos Predict2](https://docs.comfy.org/tutorials/image/cosmos/cosmos-predict2-t2i).
 
@@ -39,6 +37,7 @@ The traditional method to create training data for visual computing is to manual
 
 ### Generating Synthetic Images with GPT-4 (DALL-E)
 ![](../../.gitbook/assets/nvidia-cosmos-predict2-synthetic-data/EI-synthetic-image.webp "Generating Synthetic Images with GPT-4 (DALL-E)")
+
 Realistic training images can effortlessly be [generated using diffusion models such as GPT-4 Image/DALL-E](https://docs.edgeimpulse.com/docs/edge-impulse-studio/data-acquisition/synthetic-data#generating-synthetic-images-with-gpt-4-dall-e).
 These images need to be labelled manually or by one of the many [AI assisted labelling methods](https://docs.edgeimpulse.com/docs/edge-impulse-studio/data-acquisition/ai-labeling), e.g. OWL-ViT.
 
@@ -161,9 +160,11 @@ Extract stills
   ```
 - Upload images to Edge Impulse Studio
 - Use AI labelling
+
 ![](../../.gitbook/assets/nvidia-cosmos-predict2-synthetic-data//EI-AI-label.png "AI Labeling using OWL-ViT")
 - (Optional) Validate labels with GPT-4o
 - Train model.
+
 ![](../../.gitbook/assets/nvidia-cosmos-predict2-synthetic-data//EI-train-model.png "Train model")
 
 ## Deep dive
@@ -415,9 +416,7 @@ Notice how some images show larger or smaller cans than expected, this is a non-
 ### AI labeling with Grounded Segment Anything 2
 In contrast to Cosmos-Transfer we have no way of producing bounding boxes or labels of our objects of interest with these image or video clip generators. Without labels our images are useless for machine learning. Manually drawing bounding boxes and classifying tens of objects per image requires a large amount of manual labor. Many AI segmentation models are available, but stand-alone they require some input on what objects we want to label. Manually selecting the objects of interest would still require a huge effort. Thankfully it is possible to combine segmentation models with multimodal Visual Language Models. This way we can use natural language to select only the objects of interest and discard the rest of the objects the segmentation model has identified. The following will walk through using one of many Open Vocabolary Object-Detection (OVD) pipelines, [**Grounded Segment Anything 2**](https://github.com/IDEA-Research/Grounded-SAM-2) with [**DINO 1.0**](https://github.com/IDEA-Research/GroundingDINO). This repo supports many different pipeline configurations, many grounding models and can be a bit overwhelming. Grounding DINO 1.0 might not be the best performing alternative but it's open source and works for common objects. For niche objects [**DINO 1.5**](https://github.com/IDEA-Research/Grounding-DINO-1.5-API), [**DINO-X**](https://github.com/IDEA-Research/DINO-X-API) might reduce false positives by 30-40%, but these models require API-access and might be rate limited.
 
-> Note
->
-> SAM2 video predictor wants jpg-files as input.
+> Note: SAM2 video predictor wants jpg-files as input.
 
 Clone the repo.
 ```bash
@@ -486,6 +485,7 @@ python json_to_pascal_voc.py --json_dir can_factory/labels --xml_dir can_factory
 Now the dataset is ready for uploading to Edge Impulse Studio. Practically the images and label files should be located in the same directory and can be uploaded with one action in the web UI Data acquisition page, or by [CLI](https://docs.edgeimpulse.com/docs/tools/edge-impulse-cli).
 
 Once in Edge Impulse Studio we can design an object detection neural network and evalutate the results. We can keep generating more data until classification results stop improving.
+
 ![](../../.gitbook/assets/nvidia-cosmos-predict2-synthetic-data/EI-evaluate-model.png "Classification results")
 
 ## Generating images and videos with 14B parameters models, Text2World and Video2World
@@ -571,7 +571,7 @@ docker load -i /lambda/nfs/[network storage]/cosmos-predict2-1.0.tar
 sudo docker run --gpus all -it --rm -v "$(pwd)":/workspace -v "$(pwd)/datasets":/workspace/datasets -v "$(pwd)/checkpoints":/workspace/checkpoints nvcr.io/nvidia/cosmos/cosmos-predict2-container:1.0
 ```
 
-### Inference, [Text2World](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/documentations/inference_text2world.md)
+### Inference with [Text2World](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/documentations/inference_text2world.md)
 The default model checkpoints will produce 720p, 16 fps videos that last 5 seconds.
 
 ```bash
@@ -632,7 +632,7 @@ python -m examples.text2world \
 
 {% embed url="https://www.youtube.com/watch?v=GGe0ge2tt7o" %}
 
-### Inference, [Video2World](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/documentations/inference_video2world.md)
+### Inference with [Video2World](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/documentations/inference_video2world.md)
 As the name suggests Video2World can extend an existing video clip. However, it can be used as an alternative starting point to Text2World by taking a text prompt and an image as input. It is possible to [chain clip generation](https://github.com/nvidia-cosmos/cosmos-predict2/blob/main/documentations/inference_video2world.md#long-video-generation) to extend clip duration but that is a more advanced topic that should be run on a multi-GPU setup.
 
 Common usages would be to take a manually captured image and combine with a prompt to produce a video clip. We can also pick the best generated Text2Image results and generate clips. This is a low-effort way to generate many images of the same objects from slightly different angles. This is the same as using Text2World, but we get to be more selective on the input images. With Text2World we won't know if the initial frame is any good before the whole process is complete (note, it is actually possible to view the temporarily created first frame, but this is not very practical when processing large batches over night).
@@ -678,6 +678,7 @@ options:
 ```
 
 Input image
+
 ![NVIDIA Cosmos-Predict2-14B-Video2World demo 00092](../../.gitbook/assets/nvidia-cosmos-predict2-synthetic-data/00092.jpg)
 ```bash
 PROMPT="A conveyor belt steadily transports soda cans in a factory setting. The soda cans move slowly without jumping or bumping. The cans are only moved by the conveyor belt, they don't slide around or spin. Cans that disappear out of view don't return, new cans don't appear. Workers inspect the cans as they pass by, ensuring quality control. Our view is fixed focusing on the cans as they move along the conveyor belt."
