@@ -28,7 +28,7 @@ This tutorial shows how to use [**NVIDIA Cosmos-predict2**](https://github
 
 We'll start with a comparison of other methods and models, walk through an easy to perform web-based demo, dive into self-hosting the smaller models, use local AI-labeling models, take full advantage of single-image generation with batching and prompt enrichment with LLMs, before we move to the larger models and video generation.
 
-{% embed url="https://www.youtube.com/watch?v=hyG2tCUQsDA" %}
+{% embed url="https://www.youtube.com/watch?v=IOCHMiDh2mQ" %}
 
 In case of problems reproducing these walk-throughs, [ComfyUI now supports Cosmos Predict2](https://docs.comfy.org/tutorials/image/cosmos/cosmos-predict2-t2i).
 
