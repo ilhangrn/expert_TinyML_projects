@@ -18,6 +18,10 @@ NVIDIA has released a family of World Foundation Models (WFMs). All models have 
 
 All models are pre-trained for autonomous vehicle and robotic scenarios, and support post-training for specific use cases.
 
+Video presentation:
+
+{% embed url="https://www.youtube.com/watch?v=mJUKTgjDUEY" %}
+
 ## Prerequisites
 - Python
 - Optional: Access to NVIDIA GPU with at least 32 GB VRAM
@@ -414,7 +418,7 @@ Notice how some images show larger or smaller cans than expected, this is a non-
 ![](../../.gitbook/assets/nvidia-cosmos-predict2-synthetic-data/can_factory_enhanced_batch.png "Batch")
 
 ### AI labeling with Grounded Segment Anything 2
-In contrast to Cosmos-Transfer we have no way of producing bounding boxes or labels of our objects of interest with these image or video clip generators. Without labels our images are useless for machine learning. Manually drawing bounding boxes and classifying tens of objects per image requires a large amount of manual labor. Many AI segmentation models are available, but stand-alone they require some input on what objects we want to label. Manually selecting the objects of interest would still require a huge effort. Thankfully it is possible to combine segmentation models with multimodal Visual Language Models. This way we can use natural language to select only the objects of interest and discard the rest of the objects the segmentation model has identified. The following will walk through using one of many Open Vocabolary Object-Detection (OVD) pipelines, [**Grounded Segment Anything 2**](https://github.com/IDEA-Research/Grounded-SAM-2) with [**DINO 1.0**](https://github.com/IDEA-Research/GroundingDINO). This repo supports many different pipeline configurations, many grounding models and can be a bit overwhelming. Grounding DINO 1.0 might not be the best performing alternative but it's open source and works for common objects. For niche objects [**DINO 1.5**](https://github.com/IDEA-Research/Grounding-DINO-1.5-API), [**DINO-X**](https://github.com/IDEA-Research/DINO-X-API) might reduce false positives by 30-40%, but these models require API-access and might be rate limited.
+In contrast to Cosmos-Transfer we have no way of producing bounding boxes or labels of our objects of interest with these image or video clip generators. Without labels our images are useless for machine learning. Manually drawing bounding boxes and classifying tens of objects per image requires a large amount of manual labor. Many AI segmentation models are available, but stand-alone they require some input on what objects we want to label. Manually selecting the objects of interest would still require a huge effort. Thankfully it is possible to combine segmentation models with multimodal Visual Language Models. This way we can use natural language to select only the objects of interest and discard the rest of the objects the segmentation model has identified. The following will walk through using one of many Open Vocabulary Object-Detection (OVD) pipelines, [**Grounded Segment Anything 2**](https://github.com/IDEA-Research/Grounded-SAM-2) with [**DINO 1.0**](https://github.com/IDEA-Research/GroundingDINO). This repo supports many different pipeline configurations, many grounding models and can be a bit overwhelming. Grounding DINO 1.0 might not be the best performing alternative but it's open source and works for common objects. For niche objects [**DINO 1.5**](https://github.com/IDEA-Research/Grounding-DINO-1.5-API), [**DINO-X**](https://github.com/IDEA-Research/DINO-X-API) might reduce false positives by 30-40%, but these models require API-access and might be rate limited.
 
 > Note: SAM2 video predictor wants jpg-files as input.
 
